@@ -1,0 +1,99 @@
+program         = { separator | declaration | statement } EOF ;
+
+declaration     = let_decl
+                | function_decl
+                | qbit_decl
+                ;
+
+let_decl        = "let" identifier [ ":" type_name ]
+                  "=" expression terminator ;
+
+function_decl   = "fn" identifier
+                  "(" [ parameter_list ] ")"
+                  [ "->" type_name ]
+                  block ;
+
+parameter_list  = parameter { "," parameter } ;
+parameter       = identifier ":" type_name ;
+
+qbit_decl       = "qbit" identifier "=" ket_literal terminator ;
+
+statement       = block
+                | return_stmt
+                | emit_stmt
+                | when_stmt
+                | repeat_stmt
+                | guard_stmt
+                | observe_stmt
+                | simulate_stmt
+                | patch_stmt
+                | gate_stmt
+                | measure_stmt
+                | reset_stmt
+                | expression_stmt
+                ;
+
+block           = "{"
+                  { separator | declaration | statement }
+                  "}" ;
+
+return_stmt     = "return" [ expression ] terminator ;
+emit_stmt       = "emit" expression terminator ;
+
+when_stmt       = "when" expression block [ "else" block ] ;
+repeat_stmt     = "repeat" expression block ;
+guard_stmt      = "guard" expression block [ "else" block ] ;
+observe_stmt    = "observe" expression terminator ;
+simulate_stmt   = "simulate" block ;
+patch_stmt      = "patch" identifier "=" expression terminator ;
+
+gate_stmt       = single_gate identifier terminator
+                | "cnot" identifier "," identifier terminator
+                ;
+
+single_gate     = "h" | "x" | "z" ;
+
+measure_stmt    = "measure" identifier
+                  [ "->" identifier ]
+                  terminator ;
+
+reset_stmt      = "reset" identifier terminator ;
+expression_stmt = expression terminator ;
+
+expression      = logical_or ;
+logical_or      = logical_and { "or" logical_and } ;
+logical_and     = equality { "and" equality } ;
+equality        = comparison { ( "==" | "!=" ) comparison } ;
+comparison      = term { ( "<" | "<=" | ">" | ">=" ) term } ;
+term            = factor { ( "+" | "-" ) factor } ;
+factor          = unary { ( "*" | "/" | "%" ) unary } ;
+unary           = [ "-" | "not" ] primary ;
+
+primary         = integer_literal
+                | real_literal
+                | string_literal
+                | boolean_literal
+                | identifier
+                | call_expression
+                | probability_expression
+                | "(" expression ")"
+                ;
+
+call_expression = identifier "(" [ argument_list ] ")" ;
+argument_list   = expression { "," expression } ;
+
+probability_expression
+                = "probs" "(" identifier ")" ;
+
+type_name       = "int"
+                | "real"
+                | "bool"
+                | "string"
+                | "bit"
+                | "qbit"
+                | "unit"
+                ;
+
+ket_literal     = "|0>" | "|1>" ;
+terminator      = ";" | NEWLINE ;
+separator       = ";" | NEWLINE ;

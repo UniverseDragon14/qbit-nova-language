@@ -1,0 +1,16 @@
+id	source_summary	expected_phase	expected_result	expected_state_or_error
+EX001	emit "dragon"	runtime	output:dragon	no state change
+EX002	let x = 1; emit x + 2	runtime	output:3	x:int=1
+EX003	guard true { emit "ok" }	runtime	output:ok	no state change
+EX004	guard false { emit "bad" }	guard_error	QNOVA-E7001	no state change
+EX005	let x = 1; patch x = 2; emit x	runtime	output:2	x:int=2
+EX006	let x = 1; simulate { patch x = 9 }; emit x	runtime	output:1	outer x remains 1
+EX007	qbit q = |0>; observe probs(q)	runtime	p0=1.000,p1=0.000	q remains |0>
+EX008	qbit q = |0>; h q; observe probs(q)	runtime	p0=0.500,p1=0.500	q is equal superposition
+EX009	qbit q = |0>; x q; measure q -> b	runtime	b=1	q collapses to |1>
+EX010	qbit a = |0>; qbit b = |0>; h a; cnot a,b	runtime	Bell-state probabilities	register is entangled
+EX011	qbit q = |0>; cnot q,q	semantic_error	QNOVA-E4003	no execution
+EX012	patch missing = 1	semantic_error	QNOVA-E3001	no execution
+EX013	observe probs(missing)	semantic_error	QNOVA-E4001	no execution
+EX014	let x: bool = 1	semantic_error	QNOVA-E3003	no execution
+EX015	compact qbit source	compilation	deterministic expanded QIR and QBC	bounded expansion
