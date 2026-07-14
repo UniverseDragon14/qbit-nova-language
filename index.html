@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>QBIT NOVA Language | Universal Dragon</title>
-  <meta name="description" content="QBIT NOVA Language is an experimental Universal Dragon language project with a frozen C-implementation specification v0.1.">
+  <title>QBIT NOVA | Universal Dragon</title>
+  <meta name="description" content="QBIT NOVA C is a C-based quantum-style runtime with a bytecode VM, state-vector simulator, Virtual QCPU and OpenQASM 3.0 bridge. QBIT NOVA Language remains a separate experimental language project.">
   <meta name="theme-color" content="#050807">
   <link rel="canonical" href="https://qbit.universaldragon.com/">
-  <meta property="og:title" content="QBIT NOVA Language">
-  <meta property="og:description" content="Experimental language design, frozen C-implementation specification v0.1, virtual QCPU boundaries, AST, QIR, QBC and QVM architecture.">
+  <meta property="og:title" content="QBIT NOVA | Universal Dragon">
+  <meta property="og:description" content="QBIT NOVA C runtime and the separate QBIT NOVA Language project, with clear software-only quantum boundaries.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://qbit.universaldragon.com/">
   <meta property="og:image" content="https://raw.githubusercontent.com/UniverseDragon14/Universal-Dragon-Core/d89eea73e96cca710bf192d506df554a23587868/docs/assets/qbit-nova-universal-dragon-global-system.jpg">
@@ -17,9 +17,11 @@
       color-scheme: dark;
       --bg: #030605;
       --panel: rgba(8, 18, 14, 0.88);
+      --panel-strong: rgba(4, 13, 9, 0.96);
       --line: rgba(66, 255, 144, 0.24);
       --green: #68ff9f;
       --green-2: #20d979;
+      --blue: #7ea8ff;
       --text: #ecfff3;
       --muted: #a3b9aa;
       --warning: #ffd36a;
@@ -117,15 +119,15 @@
 
     .hero-image {
       position: relative;
-      min-height: 360px;
+      min-height: 390px;
       background:
-        linear-gradient(180deg, rgba(1, 5, 3, 0.10), rgba(1, 5, 3, 0.94)),
+        linear-gradient(180deg, rgba(1, 5, 3, 0.08), rgba(1, 5, 3, 0.96)),
         url("https://raw.githubusercontent.com/UniverseDragon14/Universal-Dragon-Core/d89eea73e96cca710bf192d506df554a23587868/docs/assets/qbit-nova-universal-dragon-global-system.jpg") center / cover no-repeat;
     }
 
     .hero-copy {
       padding: clamp(24px, 5vw, 54px);
-      margin-top: -112px;
+      margin-top: -132px;
       position: relative;
       z-index: 1;
     }
@@ -138,19 +140,28 @@
       border: 1px solid rgba(255, 211, 106, 0.32);
       border-radius: 999px;
       color: var(--warning);
-      background: rgba(0, 0, 0, 0.48);
+      background: rgba(0, 0, 0, 0.56);
       font-size: 0.82rem;
       font-weight: 850;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
 
+    .eyebrow.green {
+      color: var(--green);
+      border-color: rgba(104, 255, 159, 0.38);
+    }
+
     h1 {
-      max-width: 860px;
+      max-width: 900px;
       margin: 18px 0 14px;
-      font-size: clamp(2.3rem, 8vw, 5.8rem);
+      font-size: clamp(2.5rem, 8vw, 6rem);
       line-height: 0.94;
       letter-spacing: -0.055em;
+    }
+
+    h2 {
+      line-height: 1.12;
     }
 
     .gradient {
@@ -159,7 +170,7 @@
     }
 
     .lead {
-      max-width: 760px;
+      max-width: 800px;
       margin: 0;
       color: var(--muted);
       font-size: clamp(1rem, 2.2vw, 1.25rem);
@@ -178,6 +189,22 @@
       background: linear-gradient(135deg, var(--green), var(--green-2));
     }
 
+    .section {
+      margin-top: 22px;
+    }
+
+    .section-heading {
+      margin: 0 0 14px;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      letter-spacing: -0.035em;
+    }
+
+    .section-intro {
+      max-width: 820px;
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -191,6 +218,11 @@
       border-radius: 20px;
       background: var(--panel);
       box-shadow: var(--shadow);
+    }
+
+    .card.featured {
+      background:
+        linear-gradient(145deg, rgba(104, 255, 159, 0.07), rgba(8, 18, 14, 0.92));
     }
 
     .card h2,
@@ -221,14 +253,31 @@
       font-weight: 750;
     }
 
-    .truth {
+    .proof-grid {
       display: grid;
-      grid-template-columns: 0.85fr 1.15fr;
+      grid-template-columns: 1fr 1fr;
       gap: 16px;
       margin-top: 18px;
     }
 
-    .truth strong { color: var(--green); }
+    .proof-list {
+      display: grid;
+      gap: 10px;
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .proof-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: var(--muted);
+    }
+
+    .proof-list strong {
+      color: var(--green);
+    }
 
     .terminal {
       padding: 20px;
@@ -241,7 +290,56 @@
       box-shadow: inset 0 0 40px rgba(32, 217, 121, 0.04);
     }
 
-    .terminal p { margin: 0; }
+    .terminal p {
+      margin: 0;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .project-divider {
+      margin: 28px 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--warning);
+      font-weight: 850;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    .project-divider::before,
+    .project-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 211, 106, 0.25);
+    }
+
+    .language-hero {
+      padding: clamp(24px, 5vw, 48px);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(126, 168, 255, 0.12), transparent 26rem),
+        var(--panel-strong);
+      box-shadow: var(--shadow);
+    }
+
+    .language-hero h2 {
+      margin: 16px 0 12px;
+      font-size: clamp(2rem, 6vw, 4.8rem);
+      letter-spacing: -0.05em;
+    }
+
+    .truth {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .truth strong { color: var(--green); }
 
     footer {
       padding: 32px 4px 0;
@@ -253,9 +351,9 @@
     @media (max-width: 820px) {
       .nav { align-items: flex-start; }
       .nav-links { justify-content: flex-end; }
-      .grid, .truth { grid-template-columns: 1fr; }
-      .hero-image { min-height: 300px; }
-      .hero-copy { margin-top: -72px; }
+      .grid, .proof-grid, .truth { grid-template-columns: 1fr; }
+      .hero-image { min-height: 320px; }
+      .hero-copy { margin-top: -82px; }
     }
 
     @media (max-width: 560px) {
@@ -263,9 +361,9 @@
       .nav { flex-direction: column; }
       .nav-links { width: 100%; justify-content: stretch; }
       .nav-links a { flex: 1; }
-      .hero { border-radius: 22px; }
-      .hero-image { min-height: 245px; }
-      .hero-copy { margin-top: -42px; padding: 22px; }
+      .hero, .language-hero { border-radius: 22px; }
+      .hero-image { min-height: 250px; }
+      .hero-copy { margin-top: -46px; padding: 22px; }
       .card { padding: 19px; }
     }
   </style>
@@ -278,31 +376,127 @@
         <span>Universal Dragon</span>
       </div>
       <div class="nav-links">
-        <a href="#architecture">Architecture</a>
-        <a href="https://github.com/UniverseDragon14/qbit-nova-language">GitHub</a>
+        <a href="#qbit-nova-c">QBIT NOVA C</a>
+        <a href="#qbit-nova-language">QBIT NOVA Language</a>
+        <a href="https://install.universaldragon.com/">Install</a>
       </div>
     </nav>
 
-    <section class="hero">
+    <section class="hero" id="qbit-nova-c">
       <div class="hero-image" role="img" aria-label="QBIT NOVA Universal Dragon Global System artwork"></div>
       <div class="hero-copy">
-        <span class="eyebrow">Experimental · Active Development</span>
-        <h1>QBIT NOVA <span class="gradient">Language</span></h1>
+        <span class="eyebrow green">v4.3 Tagged Release · Latest Main Runtime Verified</span>
+        <h1>QBIT NOVA <span class="gradient">C</span></h1>
         <p class="lead">
-          A compact, quantum-aware language project by Aslam / Universal Dragon,
-          designed around guarded execution, virtual QCPU semantics, deterministic
-          compilation and a future clean-room C implementation.
+          A C-based quantum-style language and runtime with a lexer, parser, compiler,
+          bytecode VM, state-vector engine, Virtual QCPU, Bell and GHZ proof pipelines,
+          and an OpenQASM 3.0 bridge toward future quantum backends.
         </p>
         <div class="actions">
-          <a class="button primary" href="https://github.com/UniverseDragon14/qbit-nova-language/tree/main/c-implementation/specification/v0.1">Open Specification v0.1</a>
-          <a class="button" href="https://github.com/UniverseDragon14/qbit-nova-language/blob/main/LINEAGE.md">Read Project Lineage</a>
+          <a class="button primary" href="#qbit-c-architecture">View Architecture</a>
+          <a class="button" href="https://github.com/UniverseDragon14/qbit-nova-c">Open QBIT NOVA C GitHub</a>
+          <a class="button" href="https://install.universaldragon.com/#qbit-nova-c">Install QBIT NOVA C</a>
         </div>
       </div>
     </section>
 
-    <section class="grid" id="architecture" aria-label="Project architecture">
+    <section class="section" id="qbit-c-architecture" aria-labelledby="qbit-c-heading">
+      <h2 class="section-heading" id="qbit-c-heading">C runtime architecture</h2>
+      <p class="section-intro">
+        QBIT NOVA C turns compact <code>.qn</code> source into executable bytecode,
+        software quantum-state operations and portable OpenQASM output.
+      </p>
+
+      <div class="grid">
+        <article class="card featured">
+          <h3>Language pipeline</h3>
+          <p>Source is tokenized, parsed into an AST and compiled into QBIT bytecode for the runtime.</p>
+          <div class="stack">
+            <span class="tag">Lexer</span>
+            <span class="tag">Parser</span>
+            <span class="tag">AST</span>
+            <span class="tag">Compiler</span>
+            <span class="tag">QBC</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>VM and state engine</h3>
+          <p>The bytecode VM drives classical control flow, QMSG packets and state-vector quantum simulation.</p>
+          <div class="stack">
+            <span class="tag">Bytecode VM</span>
+            <span class="tag">State Vector</span>
+            <span class="tag">QMSG</span>
+            <span class="tag">Bell</span>
+            <span class="tag">GHZ</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>QCPU bridge</h3>
+          <p>The Virtual QCPU validates workloads on classical hosts and exports supported circuits through OpenQASM 3.0.</p>
+          <div class="stack">
+            <span class="tag">Virtual QCPU</span>
+            <span class="tag">Runtime Guard</span>
+            <span class="tag">OpenQASM 3.0</span>
+            <span class="tag">Future QPU</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="proof-grid" aria-label="QBIT NOVA C verification and boundary">
       <article class="card">
-        <h2>Language Core</h2>
+        <h2>Raspberry Pi 5 verification</h2>
+        <p>The latest main runtime path was exercised in an isolated Pi5 test environment.</p>
+        <ul class="proof-list">
+          <li><strong>PASS</strong> Lexer, parser, compiler and bytecode VM</li>
+          <li><strong>PASS</strong> State-vector engine and QMSG register</li>
+          <li><strong>PASS</strong> Bell-state correlation with bad count 0</li>
+          <li><strong>PASS</strong> Virtual QCPU boot and OpenQASM 3.0 export</li>
+          <li><strong>PASS</strong> Hardware capability map and runtime limit guard</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>Quantum truth boundary</h2>
+        <p>
+          QBIT NOVA C currently runs as a software Virtual QCPU on classical hardware.
+          A normal Raspberry Pi or phone is not presented as a physical quantum computer.
+          OpenQASM is the clean bridge for future real-QPU workflows.
+        </p>
+        <div class="stack">
+          <span class="tag">Software Virtual QCPU</span>
+          <span class="tag">No Hardware Mutation</span>
+          <span class="tag">Honest Physical Boundary</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="terminal section" aria-label="QBIT NOVA C execution pipeline">
+      <p>.qn → lexer → parser → AST → compiler → QBC → bytecode VM → state-vector engine → Virtual QCPU → OpenQASM 3.0</p>
+    </section>
+
+    <div class="project-divider">Separate project</div>
+
+    <section class="language-hero" id="qbit-nova-language" aria-labelledby="language-heading">
+      <span class="eyebrow">Experimental · Active Development</span>
+      <h2 id="language-heading">QBIT NOVA <span class="gradient">Language</span></h2>
+      <p class="lead">
+        An independent programming-language project by Aslam / Universal Dragon.
+        It defines compact quantum-aware syntax, guarded effects, deterministic compilation,
+        typed QIR, portable QBC and a future clean-room C implementation.
+      </p>
+      <div class="actions">
+        <a class="button primary" href="https://github.com/UniverseDragon14/qbit-nova-language/tree/main/c-implementation/specification/v0.1">Open Specification v0.1</a>
+        <a class="button" href="https://github.com/UniverseDragon14/qbit-nova-language/blob/main/LINEAGE.md">Read Project Lineage</a>
+        <a class="button" href="https://github.com/UniverseDragon14/qbit-nova-language">Open Language GitHub</a>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="QBIT NOVA Language architecture">
+      <article class="card">
+        <h3>Language core</h3>
         <p>Token vocabulary, formal grammar, core syntax, semantic rules and deterministic diagnostics.</p>
         <div class="stack">
           <span class="tag">Lexer</span>
@@ -313,19 +507,19 @@
       </article>
 
       <article class="card">
-        <h2>Execution Model</h2>
+        <h3>Execution model</h3>
         <p>Compact source lowers into typed QIR, portable QBC bytecode and a future QVM runtime.</p>
         <div class="stack">
           <span class="tag">QIR</span>
           <span class="tag">QBC</span>
           <span class="tag">QVM</span>
-          <span class="tag">C-first</span>
+          <span class="tag">Clean-room C</span>
         </div>
       </article>
 
       <article class="card">
-        <h2>Safety Boundary</h2>
-        <p>Guard, observe, simulate and patch are specified as explicit language-level effect boundaries.</p>
+        <h3>Safety boundary</h3>
+        <p>Guard, observe, simulate and patch are explicit language-level effect boundaries.</p>
         <div class="stack">
           <span class="tag">Guard</span>
           <span class="tag">Observe</span>
@@ -335,38 +529,37 @@
       </article>
     </section>
 
-    <section class="truth" aria-label="Accuracy and project status">
+    <section class="truth" aria-label="QBIT NOVA Language status">
       <article class="card">
         <h2>Current status</h2>
         <p>
           The repository publishes the frozen <strong>C-implementation specification v0.1</strong>.
-          A production C compiler and runtime have not been published yet.
+          A production compiler and runtime have not been published yet.
         </p>
       </article>
 
       <article class="card">
-        <h2>Quantum truth boundary</h2>
+        <h2>Project boundary</h2>
         <p>
-          QBIT examples describe symbolic or virtual quantum-state simulation.
-          Raspberry Pi 5 can host the software, but it is not presented as physical quantum hardware.
+          QBIT NOVA Language and QBIT NOVA C are related Universal Dragon projects,
+          but they remain separate repositories, implementations and release tracks.
+          Earlier NOVA runtime work remains in Universal Dragon Core.
         </p>
       </article>
     </section>
 
-    <section class="terminal" aria-label="Planned compilation pipeline" style="margin-top: 18px;">
+    <section class="terminal section" aria-label="QBIT NOVA Language planned compilation pipeline">
       <p>.nova / .qnova → lexer → parser → AST → semantic analysis → typed QIR → QBC → QVM</p>
     </section>
 
-    <section class="card" style="margin-top: 18px;">
-      <h2>Separate projects, clear boundaries</h2>
-      <p>
-        QBIT NOVA Language is the language specification and future implementation.
-        QBIT NOVA C remains a separate C/QCPU project, while earlier NOVA runtime work remains in Universal Dragon Core.
-      </p>
+    <section class="card section">
+      <h2>Project links</h2>
+      <p>Source, installation and earlier NOVA runtime lineage remain clearly separated.</p>
       <div class="actions">
         <a class="button" href="https://github.com/UniverseDragon14/qbit-nova-c">QBIT NOVA C</a>
+        <a class="button" href="https://github.com/UniverseDragon14/qbit-nova-language">QBIT NOVA Language</a>
         <a class="button" href="https://github.com/UniverseDragon14/Universal-Dragon-Core">Universal Dragon Core</a>
-        <a class="button" href="https://install.universaldragon.com/">NOVA Installation</a>
+        <a class="button" href="https://install.universaldragon.com/">Installation Commands</a>
       </div>
     </section>
 
