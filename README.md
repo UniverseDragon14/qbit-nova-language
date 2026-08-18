@@ -1,20 +1,52 @@
 # QBIT NOVA Language
 
-> Status: **Experimental — active development — unfinished**
+> Status: **Experimental — active development — V10 canonical reconciliation in progress**
 
-QBIT NOVA Language is a Universal Dragon language project created by
-**Aslam / Universal Dragon**.
+QBIT NOVA Language is a Universal Dragon language project created by **Aslam / Universal Dragon**.
 
-This public repository is a development preview. It is not currently a
-finished general-purpose language, stable compiler, or production runtime.
+This repository is the semantic/specification home for QBIT NOVA. It defines what the language means. The separate QBIT NOVA Native project is the native reference implementation/runtime track.
 
-## Current publication
+## V10 canonical contract
 
-This repository currently contains the frozen:
+The V10 reconciliation lock is authored under:
+
+```text
+canonical/v10/v0.1/
+```
+
+Start with:
+
+- `00_CANONICAL_CONTRACT_V0_1.md`
+- `01_RECONCILIATION_MATRIX_V0_1.md`
+- `02_NATIVE_CONFORMANCE_V0_1.md`
+- `FREEZE_STATUS.txt`
+
+The V10 contract reconciles the preserved `.ud`, `.nova`, `.qnova`, C-specification, and current `.qn` Native lineages without rewriting history.
+
+Core V10 direction includes:
+
+```text
+.qn source
+-> lexer / parser
+-> canonical AST
+-> semantic validation
+-> typed QIR
+-> QBC v10
+-> guarded QVM/backend execution
+-> evidence receipt
+```
+
+The canonical V10 classical core is `u32`, `f32`, `bool`, `string`, `bytes`, and `unit`, with quantum `qbit`, `qreg<N>`, and `result` semantics. Structured/media/agent surfaces remain versioned later profiles.
+
+QBC v8/v9 remain immutable historical Native formats. QBC v10 is explicit and must never reinterpret old bytecode.
+
+## Preserved frozen C-implementation specification v0.1
+
+The repository also preserves the earlier frozen:
 
 **QBIT NOVA Language C-implementation specification v0.1**
 
-It defines:
+It defines historical/reference contracts for:
 
 - token vocabulary
 - formal grammar
@@ -27,50 +59,42 @@ It defines:
 - minimal examples
 - implementation roadmap
 
-No C compiler or C runtime has been published yet.
+That specification remains frozen evidence. V10 does not edit it in place.
 
 ## Project identity
 
 These projects remain separate:
 
-- **QBIT NOVA Language** — language specification and future implementation
-- **QBIT NOVA C** — separate C/QCPU project
+- **QBIT NOVA Language** — canonical language meaning/specification
+- **QBIT NOVA Native** — native reference implementation/runtime
+- **QBIT NOVA C** — separate frozen C/QCPU project
 - **NOVA Language / Universal Dragon Core** — earlier runtime and language lineage
 
 Nothing is automatically merged between these projects.
 
 ## Version clarification
 
-Earlier experimental QBIT/NOVA documents and Python-hosted parser/runtime
-proofs already exist in Universal Dragon Core.
+Earlier experimental QBIT/NOVA documents and Python-hosted parser/runtime proofs already exist in Universal Dragon Core.
 
-The `v0.1` in this repository refers specifically to the newly frozen
-**C-implementation specification**, not a downgrade of the overall language
-history.
+The historical `v0.1` under `c-implementation/specification/` refers to that frozen C-implementation specification revision.
+
+`QBIT NOVA V10 Canonical Contract v0.1` means language generation V10, contract revision 0.1. It is not a downgrade or rewrite of earlier version history.
 
 See [LINEAGE.md](LINEAGE.md).
 
 ## Accuracy notice
 
-QBIT examples currently represent symbolic or virtual quantum-state
-simulation. A Raspberry Pi can host the runtime, but it is not being claimed
-as a physical quantum processing unit.
+QBIT examples represent symbolic or software virtual quantum-state simulation unless a future adapter contract explicitly targets real quantum hardware. A Raspberry Pi can host the runtime, but it is not a physical quantum processing unit.
 
-## Official page
+## Integrity check for the historical frozen spec
 
-[install.universaldragon.com](https://install.universaldragon.com/)
+From the repository root:
 
-The site currently documents the existing NOVA Termux runtime. A separate
-development-repository link will be added after this repository is verified.
-
-## Integrity check
-
-Run these commands from the repository root:
-
-    cd c-implementation/specification/v0.1
-    sha256sum -c SPEC_MANIFEST.sha256
+```bash
+cd c-implementation/specification/v0.1
+sha256sum -c SPEC_MANIFEST.sha256
+```
 
 ## License
 
-A reuse license has not yet been selected. Public visibility is currently for
-development transparency and review.
+A reuse license has not yet been selected. Public visibility is currently for development transparency and review.
