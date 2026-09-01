@@ -1,8 +1,8 @@
 # QBIT NOVA Language Branch Map
 
-Inspected on **2026-09-01**. All **16 reachable branches** are accounted for.
+Inspected on **2026-09-01**. All **16 reachable branches** are accounted for. The implementation tips were recorded before documentation-only audit commits.
 
-| Branch | Inspected tip | Purpose / state |
+| Branch | Inspected implementation tip | Purpose / state |
 |---|---|---|
 | `agent/add-qbit-nova-landing-page` | `5c597124d102` | Original landing-page change |
 | `agent/add-qbit-nova-landing-page-2` | `eb0a7448ec46` | Development-preview publication snapshot |
