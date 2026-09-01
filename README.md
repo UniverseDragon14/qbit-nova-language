@@ -2,6 +2,8 @@
 
 > Status: **Experimental — active development — unfinished**
 
+All **16 branches** were inspected on 2026-09-01. See [BRANCHES.md](BRANCHES.md) for the complete map, duplicate branch pointers, and the current source boundary.
+
 QBIT NOVA Language is a Universal Dragon language project created by
 **Aslam / Universal Dragon**.
 
