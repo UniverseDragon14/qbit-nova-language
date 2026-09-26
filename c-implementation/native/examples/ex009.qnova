@@ -1,0 +1,4 @@
+qbit q = |0>
+x q
+measure q -> b
+emit b

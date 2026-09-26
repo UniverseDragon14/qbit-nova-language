@@ -1,0 +1,2 @@
+qbit q = |0>
+let a = q

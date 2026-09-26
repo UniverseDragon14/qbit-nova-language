@@ -1,0 +1,5 @@
+let x = 1
+simulate {
+  patch x = 9
+}
+emit x

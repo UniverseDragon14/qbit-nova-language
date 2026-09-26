@@ -1,0 +1,8 @@
+fn fact(n: int) -> int {
+  when n <= 1 {
+    return 1
+  } else {
+    return n * fact(n - 1)
+  }
+}
+emit fact(5)

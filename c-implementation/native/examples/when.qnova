@@ -1,0 +1,6 @@
+let x = 2
+when x > 1 {
+  emit "yes"
+} else {
+  emit "no"
+}

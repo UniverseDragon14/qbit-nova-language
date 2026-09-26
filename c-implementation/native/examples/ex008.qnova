@@ -1,0 +1,3 @@
+qbit q = |0>
+h q
+observe probs(q)

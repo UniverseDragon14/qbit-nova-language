@@ -1,0 +1,8 @@
+let flag = true
+fn touch() -> bool {
+ patch flag = false
+ return true
+}
+guard touch() {
+ emit "bad"
+}

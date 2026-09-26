@@ -1,0 +1,5 @@
+guard false {
+  emit "bad"
+} else {
+  emit "denied"
+}

@@ -1,0 +1,6 @@
+qbit q = |0>
+simulate {
+  x q
+  observe probs(q)
+}
+observe probs(q)

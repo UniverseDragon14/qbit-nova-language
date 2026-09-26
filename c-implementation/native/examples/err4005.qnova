@@ -1,0 +1,3 @@
+let b = 1
+qbit q = |0>
+measure q -> b

@@ -1,0 +1,3 @@
+let x = 1
+patch x = 2
+emit x

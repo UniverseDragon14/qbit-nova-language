@@ -1,78 +1,87 @@
 # QBIT NOVA Language
 
-> Status: **Experimental — active development — unfinished**
+> Status: **Native C v0.1 implementation candidate — verification passing —
+> stable public release review still pending**
 
 All **16 branches** were inspected on 2026-09-01. See [BRANCHES.md](BRANCHES.md) for the complete map, duplicate branch pointers, and the current source boundary.
 
 QBIT NOVA Language is a Universal Dragon language project created by
 **Aslam / Universal Dragon**.
 
-This public repository is a development preview. It is not currently a
-finished general-purpose language, stable compiler, or production runtime.
+## Current repository
 
-## Current publication
+The repository now contains both:
 
-This repository currently contains the frozen:
+1. the frozen QBIT NOVA Language C-implementation specification v0.1
+2. the first native C compiler/runtime implementation under
+   c-implementation/native/
 
-**QBIT NOVA Language C-implementation specification v0.1**
+The native pipeline implements:
 
-It defines:
+- deterministic UTF-8 lexer and token stream
+- recursive-descent parser
+- source-spanned AST
+- semantic/type/effect validation
+- typed linear QIR
+- deterministic QBC 0.1 bytecode encoding
+- strict QBC loader with CRC validation
+- classical QVM execution
+- guard, observe, simulate and patch
+- lexical variables, functions, nested functions and recursion
+- virtual qbits with H, X, Z, CNOT, probabilities, measurement and reset
+- deterministic named RNG for tests
+- bounded source/runtime resources and deterministic diagnostics
 
-- token vocabulary
-- formal grammar
-- core syntax and semantic rules
-- guard, observe, simulate and patch boundaries
-- QBIT gate and measurement semantics
-- AST and IR boundaries
-- QBC bytecode model
-- deterministic error behavior
-- minimal examples
-- implementation roadmap
+On Raspberry Pi 5 the current native verification suite passes 54/54 tests,
+including the frozen EX001-EX015 expectations, negative diagnostics and
+malformed-QBC loader cases. The frozen specification SHA manifest remains
+unchanged.
 
-No C compiler or C runtime has been published yet.
+## Build and run
+
+    cd c-implementation/native
+    make
+    bash tests/run_tests.sh
+    build/qnova run examples/ex010.qnova --rng test:1
+
+See:
+
+- c-implementation/native/README.md
+- c-implementation/native/COMPATIBILITY.md
+- c-implementation/native/IMPLEMENTATION_NOTES.md
 
 ## Project identity
 
 These projects remain separate:
 
-- **QBIT NOVA Language** — language specification and future implementation
-- **QBIT NOVA C** — separate C/QCPU project
-- **NOVA Language / Universal Dragon Core** — earlier runtime and language lineage
+- QBIT NOVA Language — this language contract and native implementation
+- QBIT NOVA C — separate C/QCPU project
+- NOVA Language / Universal Dragon Core — earlier runtime/language lineage
 
-Nothing is automatically merged between these projects.
+Nothing is automatically merged between those projects.
 
 ## Version clarification
 
 Earlier experimental QBIT/NOVA documents and Python-hosted parser/runtime
-proofs already exist in Universal Dragon Core.
+proofs exist in Universal Dragon Core. The v0.1 here identifies the frozen
+native C-implementation contract. It is not a downgrade of the earlier
+experimental version labels.
 
-The `v0.1` in this repository refers specifically to the newly frozen
-**C-implementation specification**, not a downgrade of the overall language
-history.
-
-See [LINEAGE.md](LINEAGE.md).
+See LINEAGE.md and the native compatibility document before migrating older
+source.
 
 ## Accuracy notice
 
-QBIT examples currently represent symbolic or virtual quantum-state
-simulation. A Raspberry Pi can host the runtime, but it is not being claimed
-as a physical quantum processing unit.
+The QVM is a classical virtual quantum-state simulator. Running it on a
+Raspberry Pi or GPU does not make that hardware a physical quantum processor.
 
-## Official page
-
-[install.universaldragon.com](https://install.universaldragon.com/)
-
-The site currently documents the existing NOVA Termux runtime. A separate
-development-repository link will be added after this repository is verified.
-
-## Integrity check
-
-Run these commands from the repository root:
+## Frozen-spec integrity check
 
     cd c-implementation/specification/v0.1
     sha256sum -c SPEC_MANIFEST.sha256
 
-## License
+## Release status
 
-A reuse license has not yet been selected. Public visibility is currently for
-development transparency and review.
+The native implementation is usable as a v0.1 development candidate, but a
+stable public release still requires final lineage reconciliation,
+documentation publication/review, and an owner-selected reuse license.

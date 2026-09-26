@@ -1,0 +1,5 @@
+qbit dragon = |0>
+h dragon
+observe probs(dragon)
+measure dragon -> result
+emit result

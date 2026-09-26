@@ -1,0 +1,29 @@
+name: QBIT NOVA native v0.1
+
+on:
+  push:
+    paths:
+      - "c-implementation/native/**"
+      - "c-implementation/specification/v0.1/**"
+      - ".github/workflows/qnova-native.yml"
+  pull_request:
+    paths:
+      - "c-implementation/native/**"
+      - "c-implementation/specification/v0.1/**"
+
+jobs:
+  native:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify frozen specification
+        run: cd c-implementation/specification/v0.1 && sha256sum -c SPEC_MANIFEST.sha256
+      - name: Strict build
+        run: |
+          cd c-implementation/native
+          mkdir -p build
+          gcc -Iinclude -O2 -std=c11 -Wall -Wextra -Wpedantic -Werror             src/qnova.c src/main.c -lm -o build/qnova
+      - name: Test
+        run: |
+          cd c-implementation/native
+          bash tests/run_tests.sh

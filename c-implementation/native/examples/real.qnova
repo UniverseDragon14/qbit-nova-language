@@ -1,0 +1,2 @@
+let x: real = 2
+emit x / 4.0

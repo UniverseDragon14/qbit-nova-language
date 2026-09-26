@@ -1,0 +1,6 @@
+qbit a = |0>
+qbit b = |0>
+h a
+cnot a, b
+observe probs(a)
+observe probs(b)
