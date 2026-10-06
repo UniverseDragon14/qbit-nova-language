@@ -4,12 +4,13 @@ on:
   push:
     paths:
       - "c-implementation/native/**"
-      - "c-implementation/specification/v0.1/**"
+      - "c-implementation/specification/**"
       - ".github/workflows/qnova-native.yml"
   pull_request:
     paths:
       - "c-implementation/native/**"
-      - "c-implementation/specification/v0.1/**"
+      - "c-implementation/specification/**"
+      - ".github/workflows/qnova-native.yml"
 
 jobs:
   native:
@@ -17,13 +18,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Verify frozen specification
-        run: cd c-implementation/specification/v0.1 && sha256sum -c SPEC_MANIFEST.sha256
-      - name: Strict build
-        run: |
-          cd c-implementation/native
-          mkdir -p build
-          gcc -Iinclude -O2 -std=c11 -Wall -Wextra -Wpedantic -Werror             src/qnova.c src/main.c -lm -o build/qnova
-      - name: Test
-        run: |
-          cd c-implementation/native
-          bash tests/run_tests.sh
+        run: make -C c-implementation/native check-spec
+      - name: Strict build and fresh-checkout tests
+        run: >
+          make -C c-implementation/native
+          CFLAGS="-O2 -g -std=c11 -Wall -Wextra -Wpedantic -Werror"
+          test
+      - name: Address and undefined-behavior sanitizers
+        env:
+          ASAN_OPTIONS: detect_leaks=1:halt_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+        run: >
+          make -C c-implementation/native BUILD=build-sanitize
+          CFLAGS="-O1 -g -std=c11 -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer"
+          LDLIBS="-lm -fsanitize=address,undefined"
+          test

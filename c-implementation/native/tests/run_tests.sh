@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-set -u
+set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-Q="$ROOT/build/qnova"
+Q="${QNOVA_BIN:-$ROOT/build/qnova}"
 EX="$ROOT/examples"
 OUT="$ROOT/tests/out"
+mkdir -p "$OUT"
 pass=0
 fail=0
 
@@ -51,7 +52,7 @@ errcode EX014 3003 "$EX/ex014.qnova"
 "$Q" compile "$EX/ex015.qnova" -o "$OUT/ex015-b.qbc" || bad EX015_compile_b "compile failed"
 ha="$(sha256sum "$OUT/ex015-a.qbc" | awk '{print $1}')"
 hb="$(sha256sum "$OUT/ex015-b.qbc" | awk '{print $1}')"
-if [ "$ha" = "$hb" ]; then ok EX015_deterministic_qbc; else bad EX015_deterministic_qbc "$ha != $hb"; fi
+if [ -n "$ha" ] && [ "$ha" = "$hb" ]; then ok EX015_deterministic_qbc; else bad EX015_deterministic_qbc "$ha != $hb"; fi
 case "$("$Q" disasm "$OUT/ex015-a.qbc" | head -1)" in "QBC0 0.1"*) ok EX015_qbc_header;; *) bad EX015_qbc_header "bad header";; esac
 
 eq FUNCTION "5" "$("$Q" run "$EX/function.qnova")"
@@ -100,5 +101,8 @@ qbcerr QBC5003 5003 "$OUT/bad-const.qbc"
 qbcerr QBC5004 5004 "$OUT/unknown-op.qbc"
 qbcerr QBC5005 5005 "$OUT/truncated.qbc"
 qbcerr QBC5006 5006 "$OUT/bad-crc.qbc"
+python3 "$ROOT/tests/test_comparisons.py" "$Q"
+python3 "$ROOT/tests/test_migration.py" "$Q"
+python3 "$ROOT/tests/test_arithmetic.py" "$Q"
 printf '\nRESULT pass=%d fail=%d\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

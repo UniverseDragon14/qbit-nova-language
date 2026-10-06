@@ -36,3 +36,11 @@ v0.2, v0.3 and v0.9. Those version labels belong to earlier experimental
 lines and are not ordered migrations from this C-implementation contract.
 Migration must be explicit and source-tested; no automatic source rewrite is
 performed by the v0.1 native CLI.
+
+## Numeric fixes in implementation v0.1.1
+
+Integer/integer comparisons preserve all 64 bits. Mixed real comparisons
+retain binary64 promotion. Arithmetic overflow now reports E6006; the
+frozen baseline remains untouched. See ../specification/v0.1.1/NUMERIC_CORRECTIONS.md.
+
+See ../../docs/NATIVE_V01_LINEAGE_REVIEW.md for the reviewed migration matrix.

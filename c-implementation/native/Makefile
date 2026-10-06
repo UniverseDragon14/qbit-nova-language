@@ -22,7 +22,7 @@ $(BIN): $(OBJ)
 	$(CC) $(OBJ) $(LDLIBS) -o $@
 
 test: $(BIN)
-	bash tests/run_tests.sh
+	QNOVA_BIN="$(abspath $(BIN))" bash tests/run_tests.sh
 
 check-spec:
 	cd ../specification/v0.1 && sha256sum -c SPEC_MANIFEST.sha256

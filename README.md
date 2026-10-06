@@ -1,7 +1,7 @@
 # QBIT NOVA Language
 
-> Status: **Native C v0.1 implementation candidate — verification passing —
-> stable public release review still pending**
+> Status: **Native C v0.1.1 release candidate — numeric fixes verified —
+> public stable release awaits owner license decision**
 
 All **16 branches** were inspected on 2026-09-01. See [BRANCHES.md](BRANCHES.md) for the complete map, duplicate branch pointers, and the current source boundary.
 
@@ -32,16 +32,17 @@ The native pipeline implements:
 - deterministic named RNG for tests
 - bounded source/runtime resources and deterministic diagnostics
 
-On Raspberry Pi 5 the current native verification suite passes 54/54 tests,
-including the frozen EX001-EX015 expectations, negative diagnostics and
-malformed-QBC loader cases. The frozen specification SHA manifest remains
-unchanged.
+On Raspberry Pi 5, 54 original checks plus 310 comparison, arithmetic and
+migration checks pass under strict and ASan/UBSan builds. The original frozen
+specification SHA manifest is unchanged. See [RELEASE_REVIEW.md](docs/RELEASE_REVIEW.md)
+for scope and [the numeric amendment](c-implementation/specification/v0.1.1/NUMERIC_CORRECTIONS.md)
+for the new E6006 overflow diagnostic.
 
 ## Build and run
 
     cd c-implementation/native
     make
-    bash tests/run_tests.sh
+    make test
     build/qnova run examples/ex010.qnova --rng test:1
 
 See:
@@ -82,6 +83,11 @@ Raspberry Pi or GPU does not make that hardware a physical quantum processor.
 
 ## Release status
 
-The native implementation is usable as a v0.1 development candidate, but a
-stable public release still requires final lineage reconciliation,
-documentation publication/review, and an owner-selected reuse license.
+The native implementation is a verified local candidate, not a declared
+public stable release. The owner must select the reuse license and confirm
+its scope before stable publication. See [LICENSE_DECISION.md](docs/LICENSE_DECISION.md).
+
+- [Getting started](docs/GETTING_STARTED.md)
+- [Lineage and migration review](docs/NATIVE_V01_LINEAGE_REVIEW.md)
+- [Candidate release review](docs/RELEASE_REVIEW.md)
+- [Release signature verification](docs/release/SIGNING.md)

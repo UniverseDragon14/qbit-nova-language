@@ -30,9 +30,13 @@ language/runtime lines.
 
 See c-implementation/native/COMPATIBILITY.md.
 
-## Reconciliation still pending before stable release
+## Native v0.1 reconciliation review
 
-- behavioral mapping of earlier v0.2/v0.3/v0.9 documents
-- comparison against the earlier Python bootstrap runtime
-- final public version-number sequence
-- final stable-release migration review
+The contract mapping and bounded runtime checks are documented in
+[the native lineage review](docs/NATIVE_V01_LINEAGE_REVIEW.md).
+Source hashes distinguish inspected files from branch-name assumptions.
+The existing V10 reconciliation remains a separate development contract.
+
+Candidate version: native v0.1.1-rc.1; QBC stays QBC0 0.1.
+Public stable publication still requires the owner license decision in
+[LICENSE_DECISION.md](docs/LICENSE_DECISION.md).

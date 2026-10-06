@@ -11,7 +11,7 @@
 
 - [x] Reconcile .ud, .nova and .qnova behavior for native v0.1
 - [x] Define canonical v0.1 keywords and grammar
-- [ ] Complete behavioral mapping of v0.2, v0.3 and v0.9 lineage
+- [x] Map reviewed v0.2/v0.3/v0.9 contract surfaces; record explicit incompatibilities and bounded migration tests
 - [x] Freeze v0.1 AST/IR boundaries and QBC format
 - [x] Define native v0.1 compatibility and migration rules
 
@@ -40,8 +40,12 @@ See c-implementation/native/COMPATIBILITY.md.
 - [x] AddressSanitizer/UndefinedBehaviorSanitizer verification
 - [x] GitHub CI workflow
 - [x] Linux/Termux local installer
-- [ ] Documentation site publication/update
-- [ ] Stable release review
+- [x] Prepare repository documentation, migration review and numeric amendment
+- [ ] Publish stable documentation with the owner-approved release
+- [x] Complete technical candidate review; see docs/RELEASE_REVIEW.md
+- [ ] Owner license/provenance decision and public stable release
 - [ ] Select final reuse license before stable public release
 
-Current native verification: 54/54 tests pass on Raspberry Pi 5.
+Current candidate verification: 54 original checks + 310 added comparison,
+arithmetic and migration checks pass on Raspberry Pi 5; strict and ASan/UBSan
+builds pass. This is bounded validation, not a claim of Python/C maturity.

@@ -28,7 +28,7 @@ that Raspberry Pi or other host hardware is a physical quantum processor.
 
 Strict compiler check:
 
-    gcc -Iinclude -std=c11 -Wall -Wextra -Wpedantic -Werror       src/qnova.c src/main.c -lm -o build/qnova
+    make CFLAGS="-O2 -g -std=c11 -Wall -Wextra -Wpedantic -Werror"
 
 ## CLI
 
@@ -56,3 +56,6 @@ recursion, simulation rollback, deterministic bytecode, the documented
 diagnostic families, and malformed QBC loader cases.
 
 Generated binaries and test QBC files are intentionally ignored by Git.
+
+See ../../docs/RELEASE_REVIEW.md for the v0.1.1 candidate, added numeric
+checks, sanitizers, and explicit release limitations.

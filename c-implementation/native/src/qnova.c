@@ -1885,6 +1885,8 @@ static void print_value(FILE *out,Value v){
     }
 }
 static bool value_equal(Value a,Value b){
+    /* Preserve all 64 bits for int/int; mixed int/real follows promotion. */
+    if(a.t==TY_INT&&b.t==TY_INT)return a.v.i==b.v.i;
     if(numeric(a.t)&&numeric(b.t))return as_double(a)==as_double(b);
     if(a.t!=b.t)return false;
     if(a.t==TY_BOOL)return a.v.b==b.v.b;
@@ -1974,7 +1976,23 @@ static int vm_exec(const char *file,QbcProg *p,const qnova_limits *limits,
                     d=v_real(z);
                 }else{
                     int64_t x=a.v.i,y=b.v.i,z=0;
-                    if(in->op==OP_ADD)z=x+y;else if(in->op==OP_SUB)z=x-y;else if(in->op==OP_MUL)z=x*y;else if(in->op==OP_DIV)z=x/y;else z=x%y;
+                    bool overflow=false;
+                    if(in->op==OP_ADD){
+                        overflow=(y>0&&x>INT64_MAX-y)||(y<0&&x<INT64_MIN-y);
+                        if(!overflow)z=x+y;
+                    }else if(in->op==OP_SUB){
+                        overflow=(y<0&&x>INT64_MAX+y)||(y>0&&x<INT64_MIN+y);
+                        if(!overflow)z=x-y;
+                    }else if(in->op==OP_MUL){
+                        if(x>0)overflow=(y>0&&x>INT64_MAX/y)||(y<0&&y<INT64_MIN/x);
+                        else if(x<0)overflow=(y>0&&x<INT64_MIN/y)||(y<0&&x<INT64_MAX/y);
+                        if(!overflow)z=x*y;
+                    }else if(x==INT64_MIN&&y==-1){
+                        /* The quotient overflows; the remainder is exactly zero. */
+                        overflow=in->op==OP_DIV;
+                    }else if(in->op==OP_DIV)z=x/y;
+                    else z=x%y;
+                    if(overflow){vm_runtime_fail(&vm,6006,"integer overflow");break;}
                     d=v_int(z);
                 }
                 reg_set(&vm,o[0],d);ip++;break;
@@ -1984,8 +2002,13 @@ static int vm_exec(const char *file,QbcProg *p,const qnova_limits *limits,
                 if(in->op==OP_CMP_EQ||in->op==OP_CMP_NE){r=value_equal(a,b);if(in->op==OP_CMP_NE)r=!r;}
                 else{
                     if(!numeric(a.t)||!numeric(b.t)){vm_runtime_fail(&vm,3003,"type mismatch");break;}
-                    double x=as_double(a),y=as_double(b);
-                    if(in->op==OP_CMP_LT)r=x<y;else if(in->op==OP_CMP_LE)r=x<=y;else if(in->op==OP_CMP_GT)r=x>y;else r=x>=y;
+                    if(a.t==TY_INT&&b.t==TY_INT){
+                        int64_t x=a.v.i,y=b.v.i;
+                        if(in->op==OP_CMP_LT)r=x<y;else if(in->op==OP_CMP_LE)r=x<=y;else if(in->op==OP_CMP_GT)r=x>y;else r=x>=y;
+                    }else{
+                        double x=as_double(a),y=as_double(b);
+                        if(in->op==OP_CMP_LT)r=x<y;else if(in->op==OP_CMP_LE)r=x<=y;else if(in->op==OP_CMP_GT)r=x>y;else r=x>=y;
+                    }
                 }
                 reg_set(&vm,o[0],v_bool(r));ip++;break;
             }
